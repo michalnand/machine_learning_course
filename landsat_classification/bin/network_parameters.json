@@ -13,7 +13,15 @@
         [
           {
             "type"      : "fc",
-            "geometry"      : [1, 1, 16]
+            "geometry"      : [1, 1, 256]
+          },
+          {
+            "type"      : "relu"
+          },
+
+          {
+            "type"      : "fc",
+            "geometry"      : [1, 1, 64]
           },
           {
             "type"      : "relu"
