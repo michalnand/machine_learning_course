@@ -1,11 +1,53 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <iostream>
 
 #include <dataset_interface.h>
 #include <dataset_landsat.h>
 #include <cnn.h>
 
 #include <batch.h>
+#include <classification_compare.h>
+
+
+void train(CNN &nn, Batch &batch)
+{
+  unsigned epoch_count = 100;
+
+  for (unsigned int epoch = 0; epoch < epoch_count; epoch++)
+  {
+    for (unsigned int i = 0; i < batch.size(); i++)
+    {
+      batch.set_random();
+      nn.learn(batch.get_output(), batch.get_input());
+    }
+
+    std::cout << "training done " << epoch*100.0/epoch_count << "\n";
+  }
+}
+
+
+void test(INN *nn, DatasetInterface *dataset)
+{
+  std::vector<float> nn_output;
+  nn_output.resize(dataset->get_output_size());
+
+  ClassificationCompare comparator(dataset->get_output_size());
+
+  for (unsigned int i = 0; i < dataset->get_testing_size(); i++)
+  {
+    sDatasetItem item = dataset->training[i];
+
+    nn->forward(nn_output, item.input);
+
+    comparator.compare(item.output, nn_output);
+  }
+
+  comparator.process(true);
+
+  std::cout << comparator.get_text_result();
+
+}
 
 int main()
 {
@@ -36,6 +78,10 @@ int main()
   CNN nn("network_parameters.json",
           input_geometry,
           output_geometry);
+
+  train(nn, batch);
+
+  test(&nn, dataset);
 
   delete dataset;
 
