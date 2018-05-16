@@ -4,6 +4,7 @@
 
 #include <dataset_interface.h>
 #include <dataset_landsat.h>
+#include <dataset_mnist_tiny.h>
 #include <cnn.h>
 
 #include <batch.h>
@@ -12,7 +13,7 @@
 
 void train(CNN &nn, Batch &batch)
 {
-  unsigned epoch_count = 100;
+  unsigned epoch_count = 30;
 
   for (unsigned int epoch = 0; epoch < epoch_count; epoch++)
   {
@@ -36,7 +37,7 @@ void test(INN *nn, DatasetInterface *dataset)
 
   for (unsigned int i = 0; i < dataset->get_testing_size(); i++)
   {
-    sDatasetItem item = dataset->training[i];
+    sDatasetItem item = dataset->testing[i];
 
     nn->forward(nn_output, item.input);
 
@@ -51,27 +52,31 @@ void test(INN *nn, DatasetInterface *dataset)
 
 int main()
 {
-  DatasetInterface *dataset;
+  /*
   dataset = new DatasetLANDSAT("/home/michal/dataset/landsat/sat.trn",
                                "/home/michal/dataset/landsat/sat.tst");
+  */
+
+  DatasetMnistTiny dataset("/home/michal/dataset/mnist_tiny/training.txt",
+                           "/home/michal/dataset/mnist_tiny/testing.txt");
 
   sGeometry input_geometry, output_geometry;
 
-  input_geometry.w = dataset->get_width();
-  input_geometry.h = dataset->get_height();
-  input_geometry.d = dataset->get_channels();
+  input_geometry.w = dataset.get_width();
+  input_geometry.h = dataset.get_height();
+  input_geometry.d = dataset.get_channels();
 
   output_geometry.w = 1;
   output_geometry.h = 1;
-  output_geometry.d = dataset->get_output_size();
+  output_geometry.d = dataset.get_output_size();
 
   Batch batch(input_geometry,
               output_geometry,
-              dataset->get_training_size());
+              dataset.get_training_size());
 
   for (unsigned int i = 0; i < batch.size(); i++)
   {
-    sDatasetItem item = dataset->training[i];
+    sDatasetItem item = dataset.training[i];
     batch.add(item.output, item.input);
   }
 
@@ -81,9 +86,7 @@ int main()
 
   train(nn, batch);
 
-  test(&nn, dataset);
-
-  delete dataset;
+  test(&nn, &dataset);
 
   printf("program done\n");
 }
