@@ -1,0 +1,16 @@
+\frametitle{\bf Neural network}
+
+
+{\tiny
+\begin{verbatim}
+layer IO                   : [  20   20    2][   1    1    1][  20   20    2][    0     0]
+layer AV POOLING           : [  20   20    2][   2    2    1][  10   10    2][    0     0]
+layer FC                   : [   1    1  200][   1    1   64][   1    1   64][12800    64]
+layer RELU                 : [   1    1   64][   1    1    1][   1    1   64][    0     0]
+layer FC                   : [   1    1   64][   1    1    8][   1    1    8][  512     8]
+layer RELU                 : [   1    1    8][   1    1    1][   1    1    8][    0     0]
+layer FC                   : [   1    1    8][   1    1    2][   1    1    2][   16     2]
+layer IO                   : [   1    1    2][   1    1    1][   1    1    2][    0     0]
+\end{verbatim}
+}
+
