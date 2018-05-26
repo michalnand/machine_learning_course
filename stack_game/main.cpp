@@ -204,7 +204,7 @@ void stack_nn_bot(unsigned int size)
 
     stack.do_action(action);
 
-    timer.sleep_ms(5);
+    timer.sleep_ms(1);
   }
 }
 

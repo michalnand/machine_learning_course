@@ -1,19 +1,14 @@
 ELF = bin/main.elf
 
-LIBS_PATH=$(HOME)/programming/nn_lib
+LIBS_PATH=../libs
 
 INC+= -I.
-INC+= -I$(LIBS_PATH)/libs_common
-INC+= -I$(LIBS_PATH)/libs_dataset
-INC+= -I$(LIBS_PATH)/libs_nn
-INC+= -I$(LIBS_PATH)/libs_rl
+INC+= -I$(LIBS_PATH)
 
-
-LIBS+= $(LIBS_PATH)/libs_dataset/libs_dataset.a
-LIBS+= $(LIBS_PATH)/libs_nn/libs_nn.a
-LIBS+= $(LIBS_PATH)/libs_rl/libs_rl.a
-LIBS+= $(LIBS_PATH)/libs_common/libs_common.a
-
+LIBS+= $(LIBS_PATH)/libs_rl.a
+LIBS+= $(LIBS_PATH)/libs_dataset.a
+LIBS+= $(LIBS_PATH)/libs_nn.a
+LIBS+= $(LIBS_PATH)/libs_common.a
 
 CC = g++
 CU = nvcc

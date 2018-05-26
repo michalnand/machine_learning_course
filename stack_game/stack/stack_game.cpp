@@ -152,6 +152,7 @@ void StackGame::draw()
 
   visualisation->set_color(1.0, 1.0, 1.0);
 
+
   visualisation->print(-1.0, -1.0, -3.0, str_score);
 
   visualisation->finish();
